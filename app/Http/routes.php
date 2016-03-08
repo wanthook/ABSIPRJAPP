@@ -35,10 +35,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', ['as' => 'home.root','uses' => 'HomeController@index']);    
     Route::get('dashboard', ['as' => 'home.dashboard','uses' => 'HomeController@dashboard']);
     
-    //Route::resource('alasan','AlasanController');
-    
-    Route::get('alasan', ['as' => 'alasan.tabel','uses' => 'AlasanController@alasanViewTable']);
-    Route::post('alasan', ['as' => 'alasan.tabel','uses' => 'AlasanController@alasanDataTable']);
-    Route::get('alasan/tambah', ['as' => 'alasan.tambah','uses' => 'AlasanController@alasanFormTable']);
-//    Route::get('alasan/form', 'AlasanController@alasanFormTable');
+    /*
+     * Route buat alasan
+     */
+    Route::get('alasan',                ['as' => 'alasan.tabel','uses'  => 'AlasanController@show']);
+    Route::post('alasan',               ['as' => 'alasan.tabel','uses'  => 'AlasanController@dataTables']);
+    Route::get('alasan/tambah',         ['as' => 'alasan.tambah','uses' => 'AlasanController@create']);
+    Route::post('alasan/tambah',        ['as' => 'alasan.tambah','uses' => 'AlasanController@save']);
+    Route::get('alasan/{id}/ubah',      ['as' => 'alasan.ubah','uses'   => 'AlasanController@edit']);
+    Route::patch('alasan/{id}/ubah',         ['as' => 'alasan.ubah','uses'   => 'AlasanController@update']);
+    Route::patch('alasan/hapus/{id}',   ['as' => 'alasan.hapus','uses'   => 'AlasanController@softdelete']);
 });

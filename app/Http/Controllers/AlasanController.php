@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use App\Http\Requests\CreateAlasanRequest;
 use App\Http\Controllers\Controller;
 
 use App\Alasan;
+use Auth;
+use Yajra\Datatables\Datatables;
 
 class AlasanController extends Controller
 {
@@ -24,47 +26,60 @@ class AlasanController extends Controller
         $this->menu   = $this->parentMenu('alasan');
     }
     
-    public function alasanViewTable()
+    public function show()
     {
-        return view('admin/alasan_table',['menu'=>$this->menu]);
+        return view('admin.alasan.show',['menu'=>$this->menu]);
     }
     
-    public function alasanFormTable()
+    public function create()
     {
-        return view('admin/alasan_form',['menu'=>$this->menu]);
+        return view('admin.alasan.create',['menu'=>$this->menu]);
     }
     
-    public function alasanDataTable(Request $request)
+    public function edit($id, Alasan $alasan)
     {
-        $ret        = array();
+        $alasan   = $alasan->whereId($id)->first();
         
-        $start      = $request->input('start');
-        $length     = $request->input('length');
+        return view('admin.alasan.edit',compact('alasan'))->with(['menu'=>$this->menu]);
+    }
+    
+    public function save(CreateAlasanRequest $request, Alasan $alasan)
+    {
+        $data   = $request->all();
+        $data['created_by'] = Auth::user()->id;
+        $data['updated_by'] = Auth::user()->id;
+        $alasan->create($data);
         
-        $draw       = $request->input('draw');
+        return redirect()->route('alasan.tabel');
+    }
+    
+    public function update($id, Request $request, Alasan $alasan)
+    {
+       $edit    = $alasan->whereId($id)->first();
+       
+       $edit->fill($request->input())->save();
+       
+       return redirect()->route('alasan.tabel');
+    }
+    
+    public function softdelete($id, Alasan $alasan)
+    {
+        $edit    = $alasan->whereId($id)->first();
+       
+        $edit->fill(['hapus' => '0'])->save();
         
-        $datasT     = Alasan::whereBetween('hapus',[1,2]);
+        return redirect()->route('alasan.tabel');
+    }
+    
+    public function dataTables(Request $request, Alasan $alasan)
+    {
+        $data   = $alasan->where('hapus','1');
         
-        $countDataT = count($datasT->get());
-        
-        $dataT      = $datasT->skip($start)->take($length)->orderBy('alasan_kode','ASC')->get();
-        
-        foreach ($dataT as $dataV)
-        {
-            $row[]  = array(
-                'kode'          => $dataV->alasan_kode,
-                'nama'          => $dataV->alasan_nama,
-                'id'            => $dataV->id,
-                'tglbuat'       => ($dataV->created_at!="")?$dataV->created_at->format('d-m-Y H:i:s'):''
-            );
-        }
-        
-        $ret['draw']            = $draw;
-        $ret['recordsTotal']    = count(Alasan::where('hapus','<','2')->get());
-        $ret['recordsFiltered'] = $countDataT;
-        $ret['data']            = $row;
-        
-        
-        echo json_encode($ret);
+        return  Datatables::of($data)
+                ->addColumn('action',function($data)
+                {
+                    return '<a href="'.route("alasan.ubah",$data->id).'" class="editrow btn btn-default"><span class="icon-pencil"></span></a>';
+                })
+                ->make(true);
     }
 }

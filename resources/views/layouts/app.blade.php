@@ -89,6 +89,6 @@
         <script src="{{ asset('/assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('/assets/js/jquery.cookie.js') }}"></script>        
         <script src="{{ asset('/assets/js/custom.js') }}"></script>
-        @yield('additional_js')
+        @stack('additional_js')
     </body>
 </html>

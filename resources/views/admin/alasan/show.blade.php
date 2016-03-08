@@ -3,15 +3,13 @@
 @section('additional_style')
 @endsection
 
-@section('additional_js')
+@push('additional_js')
 <script src="{{ asset('/assets/js/jquery.dataTables.1.10.min.js') }}"></script>      
 <script>
     var App = function(){
         this.dataTable  = null;
         this.DOM        = this.getDOM();
-        //this.dataSearch = this.dataSearch();
         this.table();
-        this.loadAction();
     }
     
     App.prototype.getDOM    = function(){
@@ -20,13 +18,9 @@
         }
     }
     
-    App.prototype.loadAction    = function(){
-        
-    }
-    
     App.prototype.table     = function(){
         var _this   = this;
-        
+
         this.dataTable = _this.DOM.tableId.DataTable({
             "sPaginationType": "full_numbers",
             "searching":false,
@@ -47,45 +41,21 @@
             },
             "columns"           :
             [
-                {
-                    sortable    : false,
-                    "render"    : function ( data, type, row, meta )
-                    {                        
-                        var str	=	'', dis='';
-			
-                        if(row.kode=='C' || row.kode=='GP' || row.kode=='SD')
-                        {
-                            dis = 'disabled="disabled"';
-                        }
-                        
-                        
-                        str	+= '&nbsp;<a href="'+row.id+'" class="editrow btn btn-default" '+dis+'><span class="icon-pencil"></span></a>&nbsp;';
-                        str  	+= '<a href="'+row.id+'" class="deleterow btn btn-default" '+dis+'><span class="icon-trash"></span></a>';
+                { data    : "action", name: "action", orderable: false, searchable: false},
+                { data    : "alasan_kode", name: "alasan_kode" },
+                { data    : "alasan_nama", name: "alasan_nama" },
+                { data    : "created_at", name: "created_at" }
 
-                        return str;
-                    }
-                },
-                { "data"    : "kode" },
-                { "data"    : "nama" },
-                { "data"    : "tglbuat" }
-
-            ],
-            "drawCallback": function( settings, json ) 
-            {
-                jQuery('.detailrow').on('click',function(e)
-                {
-                    e.preventDefault();
-                }); 
-            }
+            ]
         });
     }
     
     new App();
 </script>
-@endsection
+@endpush
 
 @section('navigator')
-<li><a href="{{ url('/home') }}"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+<li><a href="{{ route('home.root') }}"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
 <li>Alasan</li>            
 @endsection
 
