@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class CreateAlasanRequest extends Request
+class CreateJabatanRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class CreateAlasanRequest extends Request
     public function rules()
     {
         return [
-            'alasan_kode' => 'required|unique:alasan,alasan_kode,null,id,hapus,1',
-            'alasan_nama' => 'required'
+            'jabatan_kode' => 'required|unique:jabatan,jabatan_kode,null,id,hapus,1',
+            'jabatan_nama' => 'required'
         ];
     }
     
@@ -37,9 +37,9 @@ class CreateAlasanRequest extends Request
    public function messages()
    {
        return [
-           'alasan_kode.required' => 'Kode alasan harus diisi.',
-           'alasan_kode.unique' => 'Kode alasan Sudah ada di database.',
-           'alasan_nama.required'  => 'Nama alasan harus diisi',
+           'jabatan_kode.required' => 'Kode jabatan harus diisi.',
+           'jabatan_kode.unique' => 'Kode jabatan Sudah ada di database.',
+           'jabatan_nama.required'  => 'Nama jabatan harus diisi',
        ];
    }
 }

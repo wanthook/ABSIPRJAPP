@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('additional_style')
+<style>
+th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        width: 100%;   
+    }
+</style>
 @endsection
 
 @push('additional_js')
@@ -33,7 +39,7 @@
             "lengthMenu": [100, 500, 1000, 1500, 2000 ],
             "ajax":
             {
-                "url"       : "{{ route('alasan.tabel') }}",
+                "url"       : "{{ route('karyawan.tabel') }}",
                 "type"      : 'POST',
                 "headers"   : {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -41,10 +47,25 @@
             },
             "columns"           :
             [
-                { data    : "action", name: "action", orderable: false, searchable: false},
-                { data    : "alasan_kode", name: "alasan_kode" },
-                { data    : "alasan_nama", name: "alasan_nama" },
-                { data    : "created_at", name: "created_at" }
+                { data    : "action",                       name: "action", orderable: false, searchable: false},
+                { data    : "karyawan_pin",                 name: "karyawan_pin" },
+                { data    : "karyawan_kode",                name: "karyawan_kode" },
+                { data    : "karyawan_nama",                name: "karyawan_nama" },
+                { data    : "jabatan.jabatan_kode",         name: "jabatan_kode", searchable: false },
+                { data    : "jabatan.jabatan_nama",         name: "jabatan_nama", searchable: false },
+                { data    : "divisi.divisi_kode",           name: "divisi_kode", searchable: false },
+                { data    : "divisi.divisi_nama",           name: "divisi_nama", searchable: false },
+                { data    : "perusahaan.perusahaan_nama",   name: "perusahaan_nama", searchable: false },
+                { data    : "jenis_kelamin",                name: "jenis_kelamin" },
+                { data    : "tempat_lahir",                 name: "tempat_lahir" },
+                { data    : "tanggal_lahir",                name: "tanggal_lahir" },
+                { data    : "rekening",                     name: "rekening" },
+                { data    : "statuskaryawan",               name: "statuskaryawan" , orderable: false, searchable: false},
+                { data    : "karyawan_statustanggal",       name: "karyawan_statustanggal" },
+                { data    : "statuskontrak",                name: "statuskontrak" , orderable: false, searchable: false},
+                { data    : "karyawan_tanggalawalkontrak",  name: "karyawan_tanggalawalkontrak" },
+                { data    : "karyawan_tanggalakhirkontrak", name: "karyawan_tanggalakhirkontrak" },
+                { data    : "created_at",                   name: "created_at" }
 
             ],
             "drawCallback": function( settings, json ) 
@@ -100,14 +121,14 @@
 
 @section('navigator')
 <li><a href="{{ route('home.root') }}"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-<li>Alasan</li>            
+<li>Karyawan</li>            
 @endsection
 
 @section('pageheader')
-<div class="pageicon"><span class="iconfa-comments"></span></div>
+<div class="pageicon"><span class="iconfa-flag"></span></div>
 <div class="pagetitle">
-    <h5>List Master Alasan</h5>
-    <h1>Alasan</h1>
+    <h5>List Master Karyawan</h5>
+    <h1>Karyawan</h1>
 </div>
 @endsection
 
@@ -117,17 +138,32 @@
         <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <li>
-                <a href="{{ route('alasan.tambah') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Alasan</a>
+                <a href="{{ route('karyawan.tambah') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Karyawan</a>
             </li>
         </ul>
     </div>
-    <h4 class="widgettitle">Tabel List Alasan</h4>
+    <h4 class="widgettitle">Tabel List Karyawan</h4>
     
     <table id="tableId" class="table table-bordered responsive">
         {{--*/
         $arrHead = array('&nbsp;',
-                         'Kode',
-                         'Nama',                         
+                         'PIN',
+                         'Kode',  
+                         'Nama',
+                         'Kode Jabatan',
+                         'Nama Jabatan',
+                         'Kode Divisi',
+                         'Nama Divisi',
+                         'Perusahaan',
+                         'Jenis Kelamin',
+                         'Tempat Lahir',
+                         'Tanggal Lahir',
+                         'No. Rekening',
+                         'Status Aktif',
+                         'Tanggal Status',
+                         'Status Karyawan',
+                         'Tanggal Awal Kontrak',
+                         'Tanggal Awal Kontrak',
                          'Tanggal Buat'
                          )
         /*--}}

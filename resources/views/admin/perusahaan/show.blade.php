@@ -33,7 +33,7 @@
             "lengthMenu": [100, 500, 1000, 1500, 2000 ],
             "ajax":
             {
-                "url"       : "{{ route('alasan.tabel') }}",
+                "url"       : "{{ route('perusahaan.tabel') }}",
                 "type"      : 'POST',
                 "headers"   : {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -42,8 +42,8 @@
             "columns"           :
             [
                 { data    : "action", name: "action", orderable: false, searchable: false},
-                { data    : "alasan_kode", name: "alasan_kode" },
-                { data    : "alasan_nama", name: "alasan_nama" },
+                { data    : "perusahaan_kode", name: "perusahaan_kode" },
+                { data    : "perusahaan_nama", name: "perusahaan_nama" },
                 { data    : "created_at", name: "created_at" }
 
             ],
@@ -100,14 +100,14 @@
 
 @section('navigator')
 <li><a href="{{ route('home.root') }}"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
-<li>Alasan</li>            
+<li>Perusahaan</li>            
 @endsection
 
 @section('pageheader')
-<div class="pageicon"><span class="iconfa-comments"></span></div>
+<div class="pageicon"><span class="iconfa-flag"></span></div>
 <div class="pagetitle">
-    <h5>List Master Alasan</h5>
-    <h1>Alasan</h1>
+    <h5>List Master Perusahaan</h5>
+    <h1>Perusahaan</h1>
 </div>
 @endsection
 
@@ -117,11 +117,11 @@
         <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <li>
-                <a href="{{ route('alasan.tambah') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Alasan</a>
+                <a href="{{ route('perusahaan.tambah') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Perusahaan</a>
             </li>
         </ul>
     </div>
-    <h4 class="widgettitle">Tabel List Alasan</h4>
+    <h4 class="widgettitle">Tabel List Perusahaan</h4>
     
     <table id="tableId" class="table table-bordered responsive">
         {{--*/

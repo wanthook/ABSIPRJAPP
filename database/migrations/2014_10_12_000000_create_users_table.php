@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->string('type',50);
             $table->increments('id');
+            $table->integer('perusahaan_id')->unsigned();
             $table->integer('hapus')->default(1);
             
             $table->integer('created_by')->nullable();
@@ -32,6 +33,8 @@ class CreateUsersTable extends Migration
             $table->index('username');
             $table->index('password');
             $table->index('hapus');
+            $table->index('type');
+            $table->index('type');
         });
     }
 

@@ -62,13 +62,18 @@ class AlasanController extends Controller
        return redirect()->route('alasan.tabel');
     }
     
-    public function softdelete($id, Alasan $alasan)
+    public function softdelete($id, Request $request, Alasan $alasan)
     {
         $edit    = $alasan->whereId($id)->first();
-       
-        $edit->fill(['hapus' => '0'])->save();
         
-        return redirect()->route('alasan.tabel');
+        $data    = $request->input();
+        
+        $data['hapus']    = '0';
+        $data['updated_by'] = Auth::user()->id;
+        
+        $edit->fill($data)->save();
+        
+        echo json_encode(array('status' => 1, 'msg' => 'Data berhasil dihapus!!!'));
     }
     
     public function dataTables(Request $request, Alasan $alasan)
@@ -78,8 +83,11 @@ class AlasanController extends Controller
         return  Datatables::of($data)
                 ->addColumn('action',function($data)
                 {
-                    return '<a href="'.route("alasan.ubah",$data->id).'" class="editrow btn btn-default"><span class="icon-pencil"></span></a>';
+                    $str  = '<a href="'.route("alasan.ubah",$data->id).'" class="editrow btn btn-default"><span class="icon-edit"></span></a>&nbsp;';
+                    $str .= '<a href="'.route("alasan.hapus",$data->id).'" class="deleterow btn btn-default"><span class="icon-remove"></span></a>&nbsp;';
+                    return $str;
                 })
+                ->editColumn('id', 'ID: {{$id}}')
                 ->make(true);
     }
 }

@@ -1,15 +1,15 @@
-<div class="par control-group {{ $errors->has('txtKodeAlasan')?'error':'' }}">
+<div class="par control-group {{ $errors->has('alasan_kode')?'error':'' }}">
     <label class="control-label">Kode Alasan <small>(Wajib Diisi)</small></label>
     <div class="field">
         {!! Form::text('alasan_kode',null,['class' => 'input-xxlarge']) !!}
-        {!! $errors->first('txtKodeAlasan','<span class="help-inline">:message</span>') !!}
+        {!! $errors->first('alasan_kode','<span class="help-inline warning">:message</span>') !!}
     </div>                
 </div>
-<div class="par control-group {{ $errors->has('txtNamaAlasan')?'error':'' }}">
+<div class="par control-group {{ $errors->has('alasan_nama')?'error':'' }}">
     <label class="control-label">Nama Alasan <small>(Wajib Diisi)</small></label>
     <div class="field">
         {!! Form::text('alasan_nama',null,['class' => 'input-xxlarge']) !!}
-        {!! $errors->first('txtNamaAlasan','<span class="help-inline warning">:message</span>') !!}
+        {!! $errors->first('alasan_nama','<span class="help-inline warning">:message</span>') !!}
     </div>                
 </div>
 <p class="stdformbutton">
