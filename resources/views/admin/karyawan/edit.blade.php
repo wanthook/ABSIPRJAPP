@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('additional_style')
+<link href="{{ asset('/assets/css/select2.css') }}" rel="stylesheet">
 @endsection
 
 @section('additional_js')
+@include('admin.karyawan.script')
 @endsection
 
 @section('navigator')
@@ -24,7 +26,7 @@
 <div class="widgetbox box-inverse">
     <h4 class="widgettitle">Form Edit Karyawan</h4>
     <div class="widgetcontent">
-        {!! Form::model($karyawan,['method' => 'PATCH', 'route' => ['karyawan.ubah',$karyawan->id]],'files'=> true) !!}
+        {!! Form::model($karyawan,['method' => 'PATCH', 'route' => ['karyawan.ubah',$karyawan->id], 'files'=> true, 'class' => 'stdform']) !!}
         @include ('admin.karyawan.form')
         {!! Form::close() !!}
     </div><!--widgetcontent-->

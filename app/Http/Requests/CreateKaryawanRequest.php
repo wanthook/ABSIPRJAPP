@@ -26,7 +26,7 @@ class CreateKaryawanRequest extends Request
         return [
             'karyawan_pin'                  => 'required|unique:karyawan,karyawan_pin,null,id,hapus,1',
             'karyawan_kode'                 => 'required|unique:karyawan,karyawan_kode,null,id,hapus,1',
-//            'alasan_nama' => 'required',
+            'karyawan_foto'                 => 'image',
             'karyawan_nama'                 => 'required',
             'karyawan_status'               => 'required',
             'karyawan_statustanggal'        => 'required|date',
@@ -52,6 +52,7 @@ class CreateKaryawanRequest extends Request
            'karyawan_pin.unique' => 'PIN sudah ada di database.',
            'karyawan_kode.required' => 'Kode karyawan harus diisi.',
            'karyawan_kode.unique' => 'Kode karyawan sudah ada di database.',
+           'karyawan_foto.image' => 'Format file foto tidak dikenal.',
            'karyawan_nama.required'  => 'Nama karyawan harus diisi',
            'karyawan_status.required' => 'Status karyawan harus diisi.',
            'karyawan_statustanggal.required' => 'Tanggal status harus diisi.',

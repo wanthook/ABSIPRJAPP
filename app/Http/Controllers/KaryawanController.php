@@ -46,8 +46,23 @@ class KaryawanController extends Controller
     public function save(CreateKaryawanRequest $request, Karyawan $karyawan)
     {
         $data   = $request->all();
+        
+        if ($request->hasFile('karyawan_foto')) 
+        {
+            $file = $request->file('karyawan_foto');
+            $filename   = crc32($file->getClientOriginalName()).'.tpk';
+            $file->move('uploads/profiles/', $filename);
+            
+            $data['karyawan_foto']  = $filename;
+        }
+        else
+        {
+            unset($data['karyawan_foto']);
+        }
+        
         $data['created_by'] = Auth::user()->id;
         $data['updated_by'] = Auth::user()->id;
+        
         $karyawan->create($data);
         
         return redirect()->route('karyawan.tabel');
@@ -57,7 +72,25 @@ class KaryawanController extends Controller
     {
        $edit    = $karyawan->whereId($id)->first();
        
-       $edit->fill($request->input())->save();
+       $data    = $request->input();
+       
+       if ($request->hasFile('karyawan_foto')) 
+        {
+            $file = $request->file('karyawan_foto');
+            $filename   = crc32($file->getClientOriginalName()).'.tpk';
+            $file->move('uploads/profiles/', $filename);
+            
+            $data['karyawan_foto']  = $filename;
+        }
+        else
+        {
+            unset($data['karyawan_foto']);
+        }
+        
+        $data['created_by'] = Auth::user()->id;
+        $data['updated_by'] = Auth::user()->id;
+       
+       $edit->fill($data)->save();
        
        return redirect()->route('karyawan.tabel');
     }

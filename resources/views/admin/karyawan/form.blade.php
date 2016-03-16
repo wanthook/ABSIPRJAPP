@@ -23,22 +23,25 @@
         </li>
         <li>
             <a data-toggle="tab" href="#dasar">Data Saudara</a>
-        </li><!--
-        <li>
-            <a data-toggle="tab" href="#lC">Section 3</a>
-        </li>-->
+        </li>
+        
     </ul>
     <div class="tab-content">
         <div id="dakar" class="tab-pane active">
             <hr>
-            <div id="imgDiv" class="par control-group">
-                <label class="control-label">Preview</label>
-                {{ Html::image('assets/images/photos/polos.png', 'Photo Karyawan',array('class' => 'img-polaroid')) }}
-            </div>
             <div class="par control-group">
+                <label class="control-label">Preview</label>
+                @if(empty(Form::getValueAttribute('karyawan_foto')))
+                {{ Html::image('assets/images/photos/polos.png', 'Photo Karyawan',array('class' => 'img-polaroid', 'id' => 'imgDiv', 'style' => 'width:100px;height:150px;')) }}
+                @else
+                {{ Html::image('uploads/profiles/'.Form::getValueAttribute('karyawan_foto'), 'Photo Karyawan',array('class' => 'img-polaroid', 'id' => 'imgDiv', 'style' => 'width:100px;height:150px;')) }}
+                @endif
+            </div>
+            <div class="par control-group {{ $errors->has('karyawan_foto')?'error':'' }}">
                 <label class="control-label">File Foto Karyawan</label>
                 <div class="field">
-                    {!! Form::file('karyawan_foto',null,['class' => 'input-xxlarge']) !!}
+                    {!! Form::file('karyawan_foto',['class' => 'input-xxlarge', 'id' => 'karyawan_foto']) !!}
+                    {!! $errors->first('karyawan_foto','<span class="help-inline warning">:message</span>') !!}
                 </div>                
             </div>
             <div class="par control-group {{ $errors->has('karyawan_pin')?'error':'' }}">

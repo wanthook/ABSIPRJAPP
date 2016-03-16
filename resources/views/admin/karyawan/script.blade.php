@@ -31,6 +31,21 @@
             headers: {'X-CSRF-Token':'{{ csrf_token() }}'}
         });
         
+        jQuery('#karyawan_foto').change(function()
+        {
+            console.log('bla');
+            if (this.files && this.files[0]) 
+            {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    jQuery('#imgDiv').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        
         jQuery('#jenis_kelamin').select2(
         {
             placeholder: "Jenis Kelamin",
@@ -57,11 +72,11 @@
             },
             initSelection: function(element, callback) 
             {
-                var id = $(element).val();
+                var id = jQuery(element).val();
 
                 if(id!="")
                 {
-                    $.ajax( 
+                    jQuery.ajax( 
                     {                    
                         url: "{{ route('jabatan.selectdua') }}",
                         dataType: 'json',
@@ -91,11 +106,11 @@
             },
             initSelection: function(element, callback) 
             {
-                var id = $(element).val();
+                var id = jQuery(element).val();
 
                 if(id!="")
                 {
-                    $.ajax( 
+                    jQuery.ajax( 
                     {                    
                         url: "{{ route('divisi.selectdua') }}",
                         dataType: 'json',
@@ -125,11 +140,11 @@
             },
             initSelection: function(element, callback) 
             {
-                var id = $(element).val();
+                var id = jQuery(element).val();
 
                 if(id!="")
                 {
-                    $.ajax( 
+                    jQuery.ajax( 
                     {                    
                         url: "{{ route('perusahaan.selectdua') }}",
                         dataType: 'json',
@@ -178,11 +193,11 @@
             },
             initSelection: function(element, callback) 
             {
-                var id = $(element).val();
+                var id = jQuery(element).val();
 
                 if(id!="")
                 {
-                    $.ajax( 
+                    jQuery.ajax( 
                     {                    
                         url: "{{ route('agama.selectdua') }}",
                         dataType: 'json',
