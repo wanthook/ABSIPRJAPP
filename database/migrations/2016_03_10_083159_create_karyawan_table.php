@@ -36,7 +36,7 @@ class CreateKaryawanTable extends Migration
             $table->string('jenis_kelamin',1);//L=Laki-laki;P=Perempuan
             $table->string('tempat_lahir',50);
             $table->date('tanggal_lahir');
-            $table->integer('agama_id')->unsigned();
+            $table->integer('agama_id')->nullable();
             $table->text('alamat');
             $table->string('kelurahan',50)->nullable();
             $table->string('kecamatan',50)->nullable();
@@ -133,9 +133,9 @@ class CreateKaryawanTable extends Migration
                   ->references('id')->on('perusahaan')
                   ->onDelete('cascade');
             
-            $table->foreign('agama_id')
-                  ->references('id')->on('agama')
-                  ->onDelete('cascade');
+//            $table->foreign('agama_id')
+//                  ->references('id')->on('agama')
+//                  ->onDelete('cascade');
             
             $table->index('karyawan_pin');
             $table->index('karyawan_kode');

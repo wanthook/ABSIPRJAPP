@@ -117,6 +117,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('karyawan',               ['as' => 'karyawan.tabel','uses'  => 'KaryawanController@dataTables']);
     Route::get('karyawan/tambah',         ['as' => 'karyawan.tambah','uses' => 'KaryawanController@create']);
     Route::post('karyawan/tambah',        ['as' => 'karyawan.tambah','uses' => 'KaryawanController@save']);
+    Route::get('karyawan/upload',         ['as' => 'karyawan.upload','uses' => 'KaryawanController@upload']);
+    Route::post('karyawan/upload',        ['as' => 'karyawan.upload','uses' => 'KaryawanController@saveupload']);
     Route::get('karyawan/{id}/ubah',      ['as' => 'karyawan.ubah','uses'   => 'KaryawanController@edit']);
     Route::patch('karyawan/{id}/ubah',    ['as' => 'karyawan.ubah','uses'   => 'KaryawanController@update']);
     Route::patch('karyawan/{id}/hapus',   ['as' => 'karyawan.hapus','uses'   => 'KaryawanController@softdelete']);

@@ -140,6 +140,9 @@ th, td { white-space: nowrap; }
             <li>
                 <a href="{{ route('karyawan.tambah') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Karyawan</a>
             </li>
+            <li>
+                <a href="{{ route('karyawan.upload') }}"><i class="iconfa-upload"></i>&nbsp;Upload XLS Karyawan</a>
+            </li>
         </ul>
     </div>
     <h4 class="widgettitle">Tabel List Karyawan</h4>

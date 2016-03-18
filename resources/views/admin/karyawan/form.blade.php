@@ -217,6 +217,13 @@
                     {!! Form::hidden('status_nikah',null,['class' => 'input-xxlarge','id' => 'status_nikah']) !!}
                 </div>                
             </div>
+            <div class="par control-group">
+                <label class="control-label">Pendidikan</label>
+                <div class="field">
+                    {!! Form::hidden('pendidikan',null,['class' => 'input-large','id' => 'pendidikan']) !!}&nbsp; &nbsp; Tahun Lulus:
+                    {!! Form::text('tahun_lulus',null,['class' => 'input-large','id' => 'tahun_lulus']) !!}
+                </div>                
+            </div>
         </div>
         
         <div id="daktp" class="tab-pane">

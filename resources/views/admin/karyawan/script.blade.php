@@ -22,8 +22,18 @@
     var statusNikah = [
         {'id':'1', 'text':'Lajang'},
         {'id':'2', 'text':'Kawin'},
-        {'id':'3', 'text':'Duda'},
-        {'id':'4', 'text':'Janda'}
+        {'id':'3', 'text':'Duda/Janda'}
+    ];
+    var statusPendidikan = [
+        {'id':'1', 'text':'SD'},
+        {'id':'2', 'text':'SMP'},
+        {'id':'3', 'text':'SMA'},
+        {'id':'4', 'text':'D1'},
+        {'id':'5', 'text':'D2'},
+        {'id':'6', 'text':'D3'},
+        {'id':'7', 'text':'S1'},
+        {'id':'8', 'text':'S2'},
+        {'id':'9', 'text':'S3'}
     ];
     jQuery(document).ready(function()
     {
@@ -195,7 +205,7 @@
             {
                 var id = jQuery(element).val();
 
-                if(id!="")
+                if(id!="0")
                 {
                     jQuery.ajax( 
                     {                    
