@@ -10,10 +10,14 @@ use App\Http\Controllers\Controller;
 
 use Validator;
 
+use Storage;
+
 use App\Karyawan;
 use App\Jabatan;
 use App\Divisi;
 use App\Perusahaan;
+use App\Karyawanuploadlog;
+
 use Auth;
 use Yajra\Datatables\Datatables;
 use Excel;
@@ -63,8 +67,8 @@ class KaryawanController extends Controller
         if ($request->hasFile('karyawan_foto')) 
         {
             $file = $request->file('karyawan_foto');
-            $filename   = crc32($file->getClientOriginalName()).'.tpk';
-            $file->move('uploads/profiles/', $filename);
+            $filename   = crc32($file->getClientOriginalName());
+            $file->move(storage_path('uploads/profiles/'), $filename);
             
             $data['karyawan_foto']  = $filename;
         }
@@ -90,15 +94,17 @@ class KaryawanController extends Controller
     {
         $data   = $request->all();
         
-        $dataBErsih = array();
-        
         if ($request->hasFile('karyawan_excel')) 
         {
+        
+            $dataBErsih = array();
+            $dataKotor  = array();
+            
             $file = $request->file('karyawan_excel');
             $filename   = crc32($file->getClientOriginalName()).'.'.$file->getClientOriginalExtension();
-            $file->move('uploads/excel/', $filename);
+            $file->move(storage_path('uploads/excel/'), $filename);
             
-            $bla = Excel::load('uploads/excel/'.$filename, function($reader)
+            $bla = Excel::load(storage_path('uploads/excel/').$filename, function($reader)
             {
                 $reader->ignoreEmpty();
                 $reader->skip(1);
@@ -126,25 +132,57 @@ class KaryawanController extends Controller
                 
                 if($validator->fails())
                 {
+                    
+                    $bla[$i]['keterangan_error']    = join(',', $validator->errors()->all()) ;
+                    $dataKotor[]    = $bla[$i];
                     continue;
                 }
                 else
                 {
                     $bla[$i]['created_by'] = Auth::user()->id;
                     $bla[$i]['updated_by'] = Auth::user()->id;
+                    $bla[$i]['created_at'] = date('Y-m-d H:i:s');
+                    $bla[$i]['updated_at'] = date('Y-m-d H:i:s');
                     $dataBErsih[] = $bla[$i];
                 }
                 
             }
+            
+        
+            if(count($dataBErsih)>0)
+            {
+                $karyawan->insert($dataBErsih);
+            }
+            
+            /*
+            * save log excel
+            */
+            $fName  = uniqid('wanthook_');
+            Excel::create($fName, function($excel) use($dataBErsih,$dataKotor)
+                        {
+                            $excel->sheet('Data Masuk', function($sheet) use($dataBErsih)
+                            {
+                                $sheet->fromArray($dataBErsih,NULL,'A1',true);
+                            });
+                            
+                            $excel->sheet('Data Gagal', function($sheet) use($dataKotor)
+                            {
+                                $sheet->fromArray($dataKotor,NULL,'A1',true);
+                            });
+                        })->store('xlsx', storage_path('filelog/karyawanupload/'));
+            /*
+            * save log
+            */
+           $karyawanlog = new Karyawanuploadlog;
+           $karyawanlog->file_upload   = $file->getClientOriginalName();
+           $karyawanlog->upload_date   = date('Y-m-d');
+           $karyawanlog->result_code   = $fName;
+           $karyawanlog->save();
         }
         
-        if(count($dataBErsih)>0)
-        {
-            print_r($dataBErsih);
-            //$karyawan->create($dataBErsih);
-        }
         
-        //return redirect()->route('karyawan.tabel');
+        
+        return redirect()->route('karyawan.upload');
     }
     
     public function update($id, Request $request, Karyawan $karyawan)
@@ -156,8 +194,8 @@ class KaryawanController extends Controller
        if ($request->hasFile('karyawan_foto')) 
         {
             $file = $request->file('karyawan_foto');
-            $filename   = crc32($file->getClientOriginalName()).'.tpk';
-            $file->move('uploads/profiles/', $filename);
+            $filename   = crc32($file->getClientOriginalName());
+            $file->move(storage_path('uploads/profiles/'), $filename);
             
             $data['karyawan_foto']  = $filename;
         }
@@ -234,6 +272,20 @@ class KaryawanController extends Controller
                     else
                         $str = '<span class="label label-success">Tetap</span>';
                     
+                    return $str;
+                })
+                ->editColumn('id', 'ID: {{$id}}')
+                ->make(true);
+    }
+    
+    public function logDataTables(Request $request, Karyawanuploadlog $log)
+    {
+        $data   = $log->orderBy('created_at','desc');
+        
+        return  Datatables::of($data)
+                ->addColumn('action',function($data)
+                {
+                    $str  = '<a href="'.route("karyawan.logdownload",$data->result_code).'" class="editrow btn btn-default"><span class="icon-download"></span></a>&nbsp;';
                     return $str;
                 })
                 ->editColumn('id', 'ID: {{$id}}')

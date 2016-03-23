@@ -95,7 +95,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::patch('perusahaan/{id}/ubah',    ['as' => 'perusahaan.ubah','uses'   => 'PerusahaanController@update']);
     Route::patch('perusahaan/{id}/hapus',   ['as' => 'perusahaan.hapus','uses'   => 'PerusahaanController@softdelete']);
     //for select2
-    Route::post('perusahaan/selectdua',        ['as' => 'perusahaan.selectdua','uses' => 'PerusahaanController@selectdua']);
+    Route::post('perusahaan/selectdua',     ['as' => 'perusahaan.selectdua','uses' => 'PerusahaanController@selectdua']);
     
     /*
      * Route buat agama
@@ -115,6 +115,7 @@ Route::group(['middleware' => 'web'], function () {
      */
     Route::get('karyawan',                ['as' => 'karyawan.tabel','uses'  => 'KaryawanController@show']);
     Route::post('karyawan',               ['as' => 'karyawan.tabel','uses'  => 'KaryawanController@dataTables']);
+    Route::post('karyawan/log',           ['as' => 'karyawan.tabellog','uses'  => 'KaryawanController@logDataTables']);
     Route::get('karyawan/tambah',         ['as' => 'karyawan.tambah','uses' => 'KaryawanController@create']);
     Route::post('karyawan/tambah',        ['as' => 'karyawan.tambah','uses' => 'KaryawanController@save']);
     Route::get('karyawan/upload',         ['as' => 'karyawan.upload','uses' => 'KaryawanController@upload']);
@@ -122,4 +123,33 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('karyawan/{id}/ubah',      ['as' => 'karyawan.ubah','uses'   => 'KaryawanController@edit']);
     Route::patch('karyawan/{id}/ubah',    ['as' => 'karyawan.ubah','uses'   => 'KaryawanController@update']);
     Route::patch('karyawan/{id}/hapus',   ['as' => 'karyawan.hapus','uses'   => 'KaryawanController@softdelete']);
+    Route::get('karyawan/{kode}/pp',      ['as' => 'karyawan.pp', function ($kode)
+    {
+        $path = storage_path("uploads/profiles/") . $kode.".tpk";
+        $response = Response::make(File::get($path), 200);
+        $response->header("Content-Type", File::mimeType($path));
+        return $response;
+    }]);
+    
+    Route::get('karyawan/{kode}/logdownload', ['as' => 'karyawan.logdownload', function ($kode)
+    {
+        $path = storage_path("filelog/karyawanupload/") . $kode.".xlsx";
+        $response = Response::make(File::get($path), 200);
+        $response->header("Content-Type", File::mimeType($path));
+        return $response;
+    }]);
+    
+    /*
+     * Route buat waktu
+     */
+    Route::get('waktu',                ['as' => 'waktu.tabel','uses'  => 'WaktuController@show']);
+    Route::post('waktu',               ['as' => 'waktu.tabel','uses'  => 'WaktuController@dataTables']);
+    Route::get('waktu/tambah',         ['as' => 'waktu.tambah','uses' => 'WaktuController@create']);
+    Route::post('waktu/tambah',        ['as' => 'waktu.tambah','uses' => 'WaktuController@save']);
+    Route::get('waktu/{id}/ubah',      ['as' => 'waktu.ubah','uses'   => 'WaktuController@edit']);
+    Route::patch('waktu/{id}/ubah',    ['as' => 'waktu.ubah','uses'   => 'WaktuController@update']);
+    Route::patch('waktu/{id}/hapus',   ['as' => 'waktu.hapus','uses'   => 'WaktuController@softdelete']);
+    //for select2
+    Route::post('waktu/selectdua',        ['as' => 'waktu.selectdua','uses' => 'WaktuController@selectdua']);
+    
 });

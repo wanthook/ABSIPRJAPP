@@ -20,6 +20,7 @@ class Karyawan extends Model
         'karyawan_tanggalakhirkontrak',
         'jabatan_id',
         'divisi_id',
+        'jadwal_id',
         'perusahaan_id',
         'bpjs',
         'asuransi',
@@ -97,6 +98,11 @@ class Karyawan extends Model
     public function perusahaan()
     {
         return $this->belongsTo('App\Perusahaan');
+    }
+    
+    public function jadwal()
+    {
+        return $this->belongsTo('App\Jadwal');
     }
     
     public function agama()

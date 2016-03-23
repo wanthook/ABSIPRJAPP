@@ -25,6 +25,7 @@ class CreateKaryawanTable extends Migration
             $table->date('karyawan_tanggalakhirkontrak')->nullable();
             $table->integer('jabatan_id')->unsigned();
             $table->integer('divisi_id')->unsigned();
+            $table->integer('jadwal_id')->unsigned();
             $table->integer('perusahaan_id')->unsigned();
             $table->string('bpjs',20)->nullable();
             $table->string('asuransi',20)->nullable();
@@ -34,23 +35,23 @@ class CreateKaryawanTable extends Migration
             $table->string('inventaris')->nullable();
                         
             $table->string('jenis_kelamin',1);//L=Laki-laki;P=Perempuan
-            $table->string('tempat_lahir',50);
-            $table->date('tanggal_lahir');
+            $table->string('tempat_lahir',50)->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->integer('agama_id')->nullable();
-            $table->text('alamat');
+            $table->text('alamat')->nullable();
             $table->string('kelurahan',50)->nullable();
             $table->string('kecamatan',50)->nullable();
-            $table->string('kota',30);
-            $table->string('kodepos',10);
-            $table->string('telpon',20);
-            $table->string('handphone',20);
-            $table->integer('status_rumah')->unsigned();    
-            $table->integer('pendidikan')->unsigned();
-            $table->string('tahun_lulus',4);
-            $table->integer('status_nikah')->unsigned();
+            $table->string('kota',30)->nullable();
+            $table->string('kodepos',10)->nullable();
+            $table->string('telpon',20)->nullable();
+            $table->string('handphone',20)->nullable();
+            $table->integer('status_rumah')->unsigned()->nullable();    
+            $table->integer('pendidikan')->unsigned()->nullable();
+            $table->string('tahun_lulus',4)->nullable();
+            $table->integer('status_nikah')->unsigned()->nullable();
             
             
-            $table->string('ktp_nik',20);
+            $table->string('ktp_nik',20)->nullable();
             $table->date('ktp_tanggal')->nullable();
             $table->text('ktp_alamat')->nullable();
             $table->string('ktp_kelurahan',50)->nullable();
@@ -131,6 +132,10 @@ class CreateKaryawanTable extends Migration
             
             $table->foreign('perusahaan_id')
                   ->references('id')->on('perusahaan')
+                  ->onDelete('cascade');
+            
+            $table->foreign('jadwal_id')
+                  ->references('id')->on('jadwal')
                   ->onDelete('cascade');
             
 //            $table->foreign('agama_id')

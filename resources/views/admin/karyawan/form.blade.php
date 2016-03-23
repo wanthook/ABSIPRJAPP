@@ -34,7 +34,7 @@
                 @if(empty(Form::getValueAttribute('karyawan_foto')))
                 {{ Html::image('assets/images/photos/polos.png', 'Photo Karyawan',array('class' => 'img-polaroid', 'id' => 'imgDiv', 'style' => 'width:100px;height:150px;')) }}
                 @else
-                {{ Html::image('uploads/profiles/'.Form::getValueAttribute('karyawan_foto'), 'Photo Karyawan',array('class' => 'img-polaroid', 'id' => 'imgDiv', 'style' => 'width:100px;height:150px;')) }}
+                {{ Html::image(route('karyawan.pp',Form::getValueAttribute('karyawan_foto')), 'Photo Karyawan',array('class' => 'img-polaroid', 'id' => 'imgDiv', 'style' => 'width:100px;height:150px;')) }}
                 @endif
             </div>
             <div class="par control-group {{ $errors->has('karyawan_foto')?'error':'' }}">
