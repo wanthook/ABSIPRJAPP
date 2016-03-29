@@ -122,7 +122,14 @@ class WaktuController extends Controller
         {
             $pen    = ($data['waktu_pendek']=='1')?'Y':'T';
             $ist    = ($data['waktu_istirahat']=='1')?'1':'0.5';
-            $ret[] = array('id' => $data['id'], 'text' => $data['waktu_kode'].' | '.$data['waktu_masuk'].' - '.$data['waktu_keluar'].' | PEN:'.$pen.' | IST:'.$ist);
+            $ret[] = array('id'     => $data['id'], 
+                           'text'   => $data['waktu_kode'].' | '.$data['waktu_masuk'].' - '.$data['waktu_keluar'].' | PEN:'.$pen.' | IST:'.$ist,
+                           'warna'  => $data['waktu_warna'],
+                           'kode'   => $data['waktu_kode'],
+                           'masuk'  => $data['waktu_masuk'],
+                           'keluar' => $data['waktu_keluar'],
+                           'pendek' => $pen,
+                           'istirahat'  => $ist);
         }
         
         echo json_encode($ret);

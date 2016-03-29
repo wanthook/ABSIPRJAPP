@@ -5,11 +5,10 @@
         {!! $errors->first('jadwal_kode','<span class="help-inline warning">:message</span>') !!}
     </div>                
 </div>
-<div class="par control-group {{ $errors->has('jadwal_tipe')?'error':'' }}">
+<div class="par control-group">
     <label class="control-label">Tipe Jadwal <small>(Wajib Diisi)</small></label>
     <div class="field">
-        {!! Form::hidden('jadwal_tipe',null,['class' => 'input-large', 'id' => 'jadwal_tipe']) !!}
-        {!! $errors->first('jadwal_tipe','<span class="help-inline warning">:message</span>') !!}
+        <span class="label label-success">DAYSHIFT</span>
     </div>                
 </div>
 <hr>

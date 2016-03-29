@@ -120,7 +120,7 @@
                 <a href="{{ route('jadwal.tambah.dayshift') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Jadwal <span class="label label-success">Dayshift</span></a>
             </li>
             <li>
-                <a href="{{ route('jadwal.tambah.dayshift') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Jadwal <span class="label label-warning">Shift</span></a>
+                <a href="{{ route('jadwal.tambah.shift') }}"><i class="iconfa-plus-sign"></i>&nbsp;Tambah Jadwal <span class="label label-warning">Shift</span></a>
             </li>
         </ul>
     </div>

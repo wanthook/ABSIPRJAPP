@@ -38,28 +38,73 @@ class JadwalController extends Controller
         return view('admin.jadwal.createdayshift',['menu'=>$this->menu]);
     }
     
-    public function edit_dayshift($id, Jadwal $jadwal)
+    public function create_shift()
     {
-        $jadwal   = $jadwal->whereId($id)->first();
+        return view('admin.jadwal.createshift',['menu'=>$this->menu]);
+    }
+    
+    public function edit_dayshift($id, Jadwal $jadwal, JadwalDetail $jadwaldetail)
+    {
+        $jadwal         = $jadwal->with('jadwal_detail')->first();        
+        
+        $jadwal_detail  = $jadwaldetail->select('waktu_id','hari')->where('jadwal_id',$jadwal->id)->get();
+        
+        foreach($jadwal_detail as $jd)
+        {
+            $jadwal->{$jd->hari}     = $jd->waktu_id;
+        }
         
         return view('admin.jadwal.editdayshift',compact('jadwal'))->with(['menu'=>$this->menu]);
     }
     
-    public function save_dayshift(CreateJadwalDayshiftRequest $request, Jadwal $jadwal)
+    public function save_dayshift(CreateJadwalDayshiftRequest $request, Jadwal $jadwal, JadwalDetail $jadwaldetail)
     {
         $data   = $request->all();
-        $data['created_by'] = Auth::user()->id;
-        $data['updated_by'] = Auth::user()->id;
-        $jadwal->create($data);
+        
+        $dataMaster['jadwal_kode']      = $data['jadwal_kode'];
+        $dataMaster['jadwal_tipe']      = 'D';
+        $dataMaster['created_by']       = Auth::user()->id;
+        $dataMaster['updated_by']       = Auth::user()->id;
+        
+        /*
+         * save master
+         */
+        $mId    = $jadwal->create($dataMaster);
+        
+        $days   = array('mon','tue','wed','thu','fri','sat','sun');
+        
+        foreach($days as $day)
+        {
+            $jadwaldetail->create(['jadwal_id'=>$data[$day], 'waktu_id'=>$mId->id, 'hari'=>$day]);
+        }
         
         return redirect()->route('jadwal.tabel');
     }
     
-    public function update($id, Request $request, Jadwal $jadwal)
+    public function update_dayshift($id, Request $request, Jadwal $jadwal, JadwalDetail $jadwaldetail)
     {
-       $edit    = $jadwal->whereId($id)->first();
-       
-       $edit->fill($request->input())->save();
+        $data   = $request->all();
+        
+        /*
+         * update master
+         */
+        $dataM  = array('_method' => 'PATCH', '_token' => $data['_token'], 'jadwal_kode' => $data['jadwal_kode']);
+        $edit    = $jadwal->whereId($id)->first();
+        
+        /*
+         * update detail
+         */
+        $days   = array('mon','tue','wed','thu','fri','sat','sun');
+        $edit->fill($dataM)->save();
+        
+        foreach($days as $day)
+        {
+            $editDetail = $jadwaldetail->where('jadwal_id',$id)->where('hari',$day)->first();
+            $dataD  = array('_method' => 'PATCH', '_token' => $data['_token'], 'waktu_id' => $data[$day]);
+            
+            $editDetail->fill($dataD)->save();
+        }
+        
        
        return redirect()->route('jadwal.tabel');
     }
@@ -85,7 +130,7 @@ class JadwalController extends Controller
         return  Datatables::of($data)
                 ->addColumn('action',function($data)
                 {
-                    $str  = '<a href="'.route("jadwal.ubah",$data->id).'" class="editrow btn btn-default"><span class="icon-edit"></span></a>&nbsp;';
+                    $str  = '<a href="'.route("jadwal.ubah.dayshift",$data->id).'" class="editrow btn btn-default"><span class="icon-edit"></span></a>&nbsp;';
                     $str .= '<a href="'.route("jadwal.hapus",$data->id).'" class="deleterow btn btn-default"><span class="icon-remove"></span></a>&nbsp;';
                     return $str;
                 })

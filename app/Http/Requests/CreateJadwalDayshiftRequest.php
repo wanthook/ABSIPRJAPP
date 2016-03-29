@@ -25,7 +25,6 @@ class CreateJadwalDayshiftRequest extends Request
     {
         return [
             'jadwal_kode'                   => 'required|unique:jadwal,jadwal_kode,null,id,hapus,1',
-            'jadwal_tipe'                   => 'required',
             'mon'                           => 'required',
             'tue'                           => 'required',
             'wed'                           => 'required',

@@ -14,9 +14,14 @@ class Jadwal extends Model
 
 
     protected $dates = ['created_at','modified_at'];
-    
+        
     public function karyawan()
     {
         return $this->hasMany('App\Karyawan');
+    }
+    
+    public function jadwal_detail()
+    {
+        return $this->hasMany('App\JadwalDetail');
     }
 }

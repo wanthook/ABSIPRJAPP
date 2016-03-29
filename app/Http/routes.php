@@ -1,5 +1,5 @@
 <?php
-$ext    = '.html';
+$ext    = '';
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -27,8 +27,8 @@ $ext    = '.html';
 */
 
 Route::group(['middleware' => ['web']], function () use ($ext){
-    Route::get('/login'.$ext, ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
-    Route::post('/login'.$ext, ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
+    Route::get('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
+    Route::post('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
 });
 
 Route::group(['middleware' => ['web','auth']], function ()  use ($ext){
@@ -159,12 +159,14 @@ Route::group(['middleware' => ['web','auth']], function ()  use ($ext){
     Route::post('jadwal'.$ext,               ['as' => 'jadwal.tabel','uses'  => 'JadwalController@dataTables']);
     Route::get('jadwal/tambah/dayshift'.$ext,['as' => 'jadwal.tambah.dayshift','uses' => 'JadwalController@create_dayshift']);
     Route::post('jadwal/tambah/dayshift'.$ext,['as' => 'jadwal.tambah.dayshift','uses' => 'JadwalController@save_dayshift']);
-    Route::get('jadwal/tambah'.$ext,         ['as' => 'jadwal.tambah','uses' => 'JadwalController@create']);
-    Route::post('jadwal/tambah'.$ext,        ['as' => 'jadwal.tambah','uses' => 'JadwalController@save']);
-    Route::get('jadwal/{id}/ubah'.$ext,      ['as' => 'jadwal.ubah','uses'   => 'JadwalController@edit']);
     Route::patch('jadwal/ubah/{id}/dayshift'.$ext,    ['as' => 'jadwal.ubah.dayshift','uses'   => 'JadwalController@update_dayshift']);
     Route::get('jadwal/ubah/{id}/dayshift'.$ext,      ['as' => 'jadwal.ubah.dayshift','uses'   => 'JadwalController@edit_dayshift']);
-    Route::patch('jadwal/{id}/ubah'.$ext,    ['as' => 'jadwal.ubah','uses'   => 'JadwalController@update']);
+    
+    Route::get('jadwal/tambah/shift'.$ext,['as' => 'jadwal.tambah.shift','uses' => 'JadwalController@create_shift']);
+    Route::post('jadwal/tambah/shift'.$ext,['as' => 'jadwal.tambah.shift','uses' => 'JadwalController@save_shift']);
+    Route::patch('jadwal/ubah/{id}/shift'.$ext,    ['as' => 'jadwal.ubah.shift','uses'   => 'JadwalController@update_shift']);
+    Route::get('jadwal/ubah/{id}/shift'.$ext,      ['as' => 'jadwal.ubah.shift','uses'   => 'JadwalController@edit_shift']);
+    
     Route::patch('jadwal/{id}/hapus'.$ext,   ['as' => 'jadwal.hapus','uses'   => 'JadwalController@softdelete']);
     //for select2
     Route::post('jadwal/selectdua'.$ext,        ['as' => 'jadwal.selectdua','uses' => 'JadwalController@selectdua']);
