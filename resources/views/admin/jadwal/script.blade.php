@@ -1,12 +1,13 @@
 <script src="{{ asset('/assets/js/select2.js') }}"></script>
-<script src="{{ asset('/assets/js/fullcalendar.min.js') }}"></script>
 <script>
     var tipe = [
         {'id':'S', 'text':'SHIFT'},
         {'id':'D', 'text':'DAYSHIFT'}
     ];
     
-    var objWaktu    = {};
+    var sMonth   = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Des'];
+    
+    var objWaktu    = {}, objSel    ={};
     
     Date.prototype.ymd = function() {
         var yyyy = this.getFullYear().toString();
@@ -57,21 +58,72 @@
             e.preventDefault();
 
             jQuery("#waktukerja").select2('val','');
+            objWaktu    = {};
         });
         
-        jQuery('#calendar').fullCalendar({
-            dayClick: function(date, jsEvent, view) {
-                
-                var _this   = this;
-                
-                if(!jQuery.isEmptyObject(objWaktu))
-                {
-                    //console.log('kosong');
-                    console.log(jQuery(_this).html());
-                    jQuery(_this).css('background-color', '#'+objWaktu.warna);
-                }
+        jQuery('#periode').datepicker(
+        {
+            dateFormat  : 'yy-mm',
+            changeMonth: true,
+            changeYear: true,
+            onClose: function(dateText, inst) { 
+                var month = jQuery("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = jQuery("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                jQuery(this).datepicker('setDate', new Date(year, month, 1));                
+                renderTable(year+'-'+(month));
             }
         });
+        
+        renderTable('');
     });
-
+    
+    var renderTable = function(date)
+    {   
+        var month   = '';
+        var year    = '';
+        if(date=='')
+        {
+            var dt  = new Date();
+            month   = parseInt(dt.getMonth());
+            year    = parseInt(dt.getFullYear());
+        }
+        else
+        {
+            var splt    = date.split('-');
+            month       = parseInt(splt[1]);
+            year        = parseInt(splt[0]);
+        }
+        
+        var strMonth      = month-1;
+        jQuery('#lblCal').html('Periode: 22 '+sMonth[(strMonth<0)?11:strMonth]+' - 21 '+sMonth[strMonth+1]+' '+year);
+        
+        date = year+'-'+(month+1);
+        
+        jQuery("#calendar").off();        
+        jQuery('#calendar').load("{{ route('jadwal.calendar') }}",{'p':date,'id':'{{ $jadwal->id }}'})
+                           .delegate("tr td", "click", function () {
+                               var date       = jQuery(this).attr('dt');
+                               var dt       = new Date(date);
+                               //console.log(objWaktu);
+                               if(!jQuery.isEmptyObject(objWaktu))
+                               {
+                                   if(date)
+                                   {
+                                        var html = dt.getDate()+'<br>'+objWaktu.kode+'<br>'+objWaktu.masuk+' - '+objWaktu.keluar+'<br>Istirahat: '+objWaktu.istirahat+'<br>Pendek: '+objWaktu.pendek;
+                                        jQuery(this).html(html);
+                                        jQuery(this).css('background-color', objWaktu.warna);
+                                   }
+                               }
+                               else
+                               {
+                                   var html = dt.getDate();
+                                   jQuery(this).html(html);
+                                   jQuery(this).css('background-color', '#FFFFFF');
+                               }
+                               
+                               objSel[date] = objWaktu;
+                               
+                               jQuery('#listshift').val(JSON.stringify(objSel));
+                           });
+    }
 </script>

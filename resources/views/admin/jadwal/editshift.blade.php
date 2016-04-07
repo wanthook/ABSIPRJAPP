@@ -28,8 +28,8 @@
 <div class="widgetbox box-inverse">
     <h4 class="widgettitle">Form Edit Jadwal</h4>
     <div class="widgetcontent">
-        {!! Form::model($jadwal,['method' => 'PATCH', 'route' => ['jadwal.ubah.dayshift',$jadwal->id], 'class' => 'stdform']) !!}
-        @include ('admin.jadwal.formdayshift')
+        {!! Form::model($jadwal,['method' => 'PATCH', 'route' => ['jadwal.ubah.shift',$jadwal->id], 'class' => 'stdform']) !!}
+        @include ('admin.jadwal.formshift')
         {!! Form::close() !!}
     </div><!--widgetcontent-->
 </div>

@@ -8,11 +8,17 @@
 <div class="par control-group">
     <label class="control-label">Tipe Jadwal <small>(Wajib Diisi)</small></label>
     <div class="field">
-        <span class="label label-success">SHIFT</span>
+        <span class="label label-warning">SHIFT</span>
     </div>                
 </div>
 <hr>
 <div class="row-fluid">
+    <div class="par control-group span4">
+        <label class="control-label">Periode Shift</label>
+        <div class="field">
+            {!! Form::text('periode',null,['class' => 'input-large', 'id' => 'periode']) !!}
+        </div> 
+    </div>
     <div class="par control-group span6">
         <label class="control-label">Waktu kerja</label>
         <div class="field">
@@ -25,9 +31,27 @@
 </div>
 
 <h4 class="widgettitle title-warning">Detail Shift</h4>
-<div style="overflow-x: auto;">
+<h2><i class="iconfa-calendar"></i>&nbsp;<span id="lblCal"></span></h2>
+{!! Form::hidden('listshift',null,['id' => 'listshift']) !!}
+<h4>{!! $errors->first('listshift','<span class="help-inline warning">:message</span>') !!}</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Senin</th>
+            <th>Selasa</th>
+            <th>Rabu</th>
+            <th>Kamis</th>
+            <th>Jum'at</th>
+            <th>Sabtu</th>
+            <th>Minggu</th>
+        </tr>
+    </thead>
+    <tbody id="calendar">
+    </tbody>
+</table>
+<!--<div style="overflow-x: auto;">
 <div id='calendar'></div>
-</div>
+</div>-->
 <p class="stdformbutton">
     <button class="btn btn-primary">Simpan</button>
     <button type="reset" class="btn">Reset</button>

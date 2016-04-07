@@ -2,7 +2,6 @@
 
 @section('additional_style')
 <link href="{{ asset('/assets/css/select2.css') }}" rel="stylesheet">
-<link href="{{ asset('/assets/css/fullcalendar.min.css') }}" rel="stylesheet">
 <style>
     .ui-datepicker-calendar {
         display: none;

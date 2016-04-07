@@ -28,7 +28,7 @@
                                     <ul>
         <!--                                <li><a href="editprofile.html">Edit Profile</a></li>
                                         <li><a href="">Account Settings</a></li>-->
-                                        <li><a href="{{ url('/logout') }}">Sign Out</a></li>
+                                        <li><a href="{{ route('logout') }}">Sign Out</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -82,7 +82,8 @@
 
         </div><!--mainwrapper-->
         <!-- Latest compiled and minified JQuery -->
-        <script src="{{ asset('/assets/js/jquery-1.9.1.min.js') }}"></script>        
+        <!--<script src="{{ asset('/assets/js/jquery-1.9.1.min.js') }}"></script>-->    
+        <script src="{{ asset('/assets/js/jquery-2.2.2.min.js') }}"></script>
         <script src="{{ asset('/assets/js/jquery-migrate-1.1.1.min.js') }}"></script>
         <script src="{{ asset('/assets/js/jquery-ui-1.9.2.min.js') }}"></script>
         <script src="{{ asset('/assets/js/modernizr.min.js') }}"></script>
